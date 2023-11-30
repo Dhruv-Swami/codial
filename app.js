@@ -8,9 +8,9 @@ const userRoute = require("./routes/userRoute");
 const expressLayouts = require("express-ejs-layouts");
 const db = require("./config/mongoose");
 // used for passport cookie
-// const session = require("express-session");
-// const passport = require("passport");
-// const passportLocal = require("./config/passport-local");
+const session = require("express-session");
+const passport = require("passport");
+const passportLocal = require("./config/passport-local");
 
 app.use(express.urlencoded());
 app.use(cookieParser());
