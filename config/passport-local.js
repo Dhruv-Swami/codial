@@ -2,6 +2,7 @@ const passport = require("passport");
 const localStratey = require("passport-local").Strategy;
 const User = require("../models/userModel");
 // authentication using passport
+
 passport.use(
   new localStratey(
     {
@@ -38,5 +39,19 @@ passport.deserializeUser((id, done) => {
     return done(null, user);
   });
 });
+
+passport.checkAuthentication = function (req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  return res.redirect("/users/signIn");
+};
+
+passport.setAuthenticatedUser = function (req, res, next) {
+  if (req.isAuthenticated()) {
+    res.locals.user = req.user;
+  }
+  next();
+};
 
 module.exports = passport;

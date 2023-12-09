@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 // Check your database connection configuration
 
-mongoose.connect("mongodb://localhost:27017/Codial", {
+mongoose.connect("mongodb://127.0.0.1:27017/Codial", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

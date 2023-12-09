@@ -3,6 +3,8 @@ const User = require("../models/userModel");
 exports.profile = async (req, res) => {
   try {
     if (req.cookies.user_id) {
+      console.log("Cookie Value:", req.cookies.user_id);
+
       const user = await User.findById(req.cookies.user_id);
       if (user) {
         return res.render("userProfile", {
@@ -12,7 +14,7 @@ exports.profile = async (req, res) => {
       }
       res.redirect("/users/signIn");
     } else {
-      res.redirect("/users/signIn");
+      res.redirect("/users/signUp");
     }
   } catch (error) {
     console.error(error);
@@ -103,4 +105,17 @@ exports.createSession = async function (req, res) {
     console.error("Error in creating session:", err);
     return res.status(500).send("Internal Server Error");
   }
+};
+
+// exports.createSession = (req, res) => {
+//   res.redirect("/");
+// };
+
+exports.destroySession = function (req, res) {
+  req.logout(function (err) {
+    if (err) {
+      console.error(err);
+    }
+    res.redirect("/");
+  });
 };
