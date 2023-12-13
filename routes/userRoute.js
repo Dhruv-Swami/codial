@@ -17,6 +17,13 @@ router.post(
 
   usersController.createSession
 );
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/dashboard",
+    failureRedirect: "/login",
+  })
+);
 
 router.get("/signOut", usersController.destroySession);
 

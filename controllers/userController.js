@@ -29,6 +29,8 @@ exports.signUp = (req, res) => {
 };
 
 exports.signIn = (req, res) => {
+  console.log("User:", req.user);
+
   return res.render("userSignIn", {
     title: "Codial | Sign In",
   });
@@ -92,7 +94,7 @@ exports.createSession = async function (req, res) {
       if (user.password === req.body.password) {
         // Create session and set user_id cookie
         res.cookie("user_id", user.id);
-        return res.redirect("/users/profile");
+        return res.redirect("/");
       } else {
         console.log("Password doesn't match");
         return res.redirect("back");
