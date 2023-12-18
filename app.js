@@ -6,14 +6,17 @@ const port = 5000;
 const homeRoute = require("./routes/route");
 const userRoute = require("./routes/userRoute");
 const postRoute = require("./routes/postRoute");
+const commentRoute = require("./routes/commentRoute");
 const expressLayouts = require("express-ejs-layouts");
 const db = require("./config/mongoose");
 // used for passport cookie
 const session = require("express-session");
 const passport = require("passport");
 const passportLocal = require("./config/passport-local");
-// const MongoStore = require("connect-mongo").default;
+const MongoStore = require("connect-mongo");
 const sassMiddleware = require("node-sass-middleware");
+// const session = require("express-session");
+const mongoose = require("mongoose");
 
 const postController = require("./controllers/postController");
 
@@ -53,18 +56,37 @@ app.set("views", "./views");
 
 // mongo store is used to store session cookie in db
 
+// app.use(
+//   session({
+//     name: "codeial",
+//     // TODO change the secret before deployment in production mode
+//     secret: "hunters",
+//     saveUninitialized: true,
+//     resave: false,
+//     cookie: {
+//       maxAge: 1000 * 60 * 100,
+//     },
+//   })
+// );
+
+const store = new MongoStore({
+  mongoUrl: "mongodb://127.0.0.1:27017/Codial",
+  collectionName: "sessions", // specify the collection name if needed
+});
+
 app.use(
   session({
     name: "codeial",
-    // TODO change the secret before deployment in production mode
     secret: "hunters",
     saveUninitialized: true,
     resave: false,
     cookie: {
-      maxAge: 1000 * 60 * 100,
+      maxAge: 1000 * 60 * 60 * 24 * 100, // 100 days
     },
+    store: store,
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -73,6 +95,7 @@ app.use(passport.setAuthenticatedUser);
 app.use("/", homeRoute);
 app.use("/users", userRoute);
 app.use("/posts", postRoute);
+app.use("/commnet", commentRoute);
 
 app.listen(port, (err) => {
   if (err) {
